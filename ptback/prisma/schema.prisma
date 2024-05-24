@@ -4,17 +4,77 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique
-  password       String
-  department     String
-  course         String
-  profile_image  Bytes?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  password      String
+  department    String
+  course        String
+  profile_image Bytes?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  Avaliacoes  Avaliacao[]
+  Comentarios Comentario[]
+
+  @@map("Users")
+}
+
+model Professor {
+  id           Int      @id @default(autoincrement())
+  name         String
+  department   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  disciplinaId Int
+
+  disciplina Disciplina @relation(name: "iddisciplina", fields: [disciplinaId], references: [id])
+
+  Avaliacoes  Avaliacao[]
+  disciplinas Disciplina[] @relation(name: "idprofessor")
+}
+
+model Disciplina {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  professorId Int
+
+  professor Professor @relation(name: "idprofessor", fields: [professorId], references: [id])
+
+  professores Professor[] @relation(name: "iddisciplina")
+  avaliacao   Avaliacao[]
+}
+
+model Comentario {
+  id          Int      @id @default(autoincrement())
+  conteudo    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  avaliacaoId Int
+
+  user      User      @relation(fields: [userId], references: [id])
+  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [id])
+}
+
+model Avaliacao {
+  id           Int      @id @default(autoincrement())
+  conteudo     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       Int
+  professorId  Int
+  disciplinaId Int
+
+  user       User       @relation(fields: [userId], references: [id])
+  professor  Professor  @relation(fields: [professorId], references: [id])
+  disciplina Disciplina @relation(fields: [disciplinaId], references: [id])
+
+  Comentarios Comentario[]
 }
