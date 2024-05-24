@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -30,10 +30,10 @@ model Professor {
   updatedAt    DateTime @updatedAt
   disciplinaId Int
 
-  disciplina Disciplina @relation(name: "iddisciplina", fields: [disciplinaId], references: [id])
+  //disciplina Disciplina @relation(name: "iddisciplina", fields: [disciplinaId], references: [id])
 
   Avaliacoes  Avaliacao[]
-  disciplinas Disciplina[] @relation(name: "idprofessor")
+  disciplinas Disciplina[] @relation("professordisciplina")
 }
 
 model Disciplina {
@@ -43,9 +43,8 @@ model Disciplina {
   updatedAt   DateTime @updatedAt
   professorId Int
 
-  professor Professor @relation(name: "idprofessor", fields: [professorId], references: [id])
+  professor Professor @relation("professordisciplina", fields: [professorId], references: [id])
 
-  professores Professor[] @relation(name: "iddisciplina")
   avaliacao   Avaliacao[]
 }
 
@@ -57,7 +56,7 @@ model Comentario {
   userId      Int
   avaliacaoId Int
 
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [id])
 }
 
@@ -70,7 +69,7 @@ model Avaliacao {
   professorId  Int
   disciplinaId Int
 
-  user       User       @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   professor  Professor  @relation(fields: [professorId], references: [id])
   disciplina Disciplina @relation(fields: [disciplinaId], references: [id])
 
