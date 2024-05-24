@@ -20,8 +20,6 @@ model User {
 
   Avaliacoes  Avaliacao[]
   Comentarios Comentario[]
-
-  @@map("Users")
 }
 
 model Professor {
