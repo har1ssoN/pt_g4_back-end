@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AvaliacaoService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createAvaliacaoDto: CreateAvaliacaoDto) {
+  async createAvaliacao(createAvaliacaoDto: CreateAvaliacaoDto) {
     const avaliacao = await this.prisma.avaliacao.create({
       data: createAvaliacaoDto,
     });

@@ -16,8 +16,8 @@ export class AvaliacaoController {
   constructor(private readonly avaliacaoService: AvaliacaoService) {}
 
   @Post()
-  async create(@Body() createAvaliacaoDto: CreateAvaliacaoDto) {
-    return await this.avaliacaoService.create(createAvaliacaoDto);
+  async createAvaliacao(@Body() createAvaliacaoDto: CreateAvaliacaoDto) {
+    return await this.avaliacaoService.createAvaliacao(createAvaliacaoDto);
   }
 
   @Get()

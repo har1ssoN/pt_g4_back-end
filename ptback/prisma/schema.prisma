@@ -15,6 +15,7 @@ model User {
   profile_image Bytes?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  
   Avaliacoes  Avaliacao[]
   Comentarios Comentario[]
 }
@@ -39,7 +40,6 @@ model Disciplina {
   professorId Int
 
   professor Professor @relation("professordisciplina", fields: [professorId], references: [id])
-
   avaliacao   Avaliacao[]
 }
 model Comentario {
@@ -49,6 +49,7 @@ model Comentario {
   updatedAt   DateTime @updatedAt
   userId      Int
   avaliacaoId Int
+
   user      User      @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [id])
 }
@@ -60,6 +61,7 @@ model Avaliacao {
   userId       Int
   professorId  Int
   disciplinaId Int
+
   user       User       @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   professor  Professor  @relation(fields: [professorId], references: [id])
   disciplina Disciplina @relation(fields: [disciplinaId], references: [id])
