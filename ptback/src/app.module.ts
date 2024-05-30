@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ComentarioModule } from './comentario/comentario.module';
 import { UserModule } from './user/user.module';
 import { ProfessorModule } from './professor/professor.module';
+import { DisciplinaModule } from './disciplina/disciplina.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProfessorModule } from './professor/professor.module';
     ComentarioModule,
     UserModule,
     ProfessorModule,
+    DisciplinaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
