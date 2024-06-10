@@ -7,6 +7,9 @@ import { ComentarioModule } from './comentario/comentario.module';
 import { UserModule } from './user/user.module';
 import { ProfessorModule } from './professor/professor.module';
 import { DisciplinaModule } from './disciplina/disciplina.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { DisciplinaModule } from './disciplina/disciplina.module';
     UserModule,
     ProfessorModule,
     DisciplinaModule,
+    AuthModule,
+    JwtModule,
+    ConfigModule.forRoot({isGlobal: true}),
   ],
   controllers: [AppController],
   providers: [AppService],
