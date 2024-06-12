@@ -21,7 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     DisciplinaModule,
     AuthModule,
     JwtModule,
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [AppService],

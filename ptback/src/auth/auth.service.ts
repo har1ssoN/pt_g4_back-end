@@ -9,34 +9,40 @@ import { UserPayload } from './types/UserPayload';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService,
+  constructor(
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService) {}
+    private readonly configService: ConfigService,
+  ) {}
 
-  async validateUser(email: string, password: string){
+  async validateUser(email: string, password: string) {
     const user = await this.userService.findOneByEmail(email);
 
-    if (user){
+    if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      if(isPasswordValid){
-        return {...user,
-          password: undefined
-        };
+      if (isPasswordValid) {
+        return { ...user, password: undefined };
       }
     }
     return null;
   }
 
   async login(LoginRequestBody: LoginRequestBody): Promise<UserToken> {
-    const user = await this.validateUser(LoginRequestBody.email, LoginRequestBody.password);
+    const user = await this.validateUser(
+      LoginRequestBody.email,
+      LoginRequestBody.password,
+    );
 
     if (!user) {
       throw new Error('Credenciais inválidas');
     }
-    const payload : UserPayload = { sub: user.id, email: user.email };
+    const payload: UserPayload = { sub: user.id, email: user.email };
 
-    const jwtToken = this.jwtService.sign(payload, {expiresIn: '1d', secret: this.configService.get('JWT_SECRET')});
+    const jwtToken = this.jwtService.sign(payload, {
+      expiresIn: '1d',
+      secret: this.configService.get('JWT_SECRET'),
+    });
 
-    return {access_token: jwtToken};
+    return { access_token: jwtToken };
   }
 }

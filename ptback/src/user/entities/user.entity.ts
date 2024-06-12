@@ -1,21 +1,21 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from 'class-validator';
 
 export class UserEntity {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    email: string;
+  @IsString()
+  email: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  password: string;
 
-    @IsString()
-    department: string;
+  @IsString()
+  department: string;
 
-    @IsString()
-    course: string; 
+  @IsString()
+  course: string;
 
-    @IsOptional()
-    profile_image?: Buffer;
+  @IsOptional()
+  profile_image?: Buffer;
 }
