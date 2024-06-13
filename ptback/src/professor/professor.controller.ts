@@ -12,6 +12,7 @@ import {
 import { ProfessorService } from './professor.service';
 import { CreateProfessorDto } from './dto/create-professor.dto';
 import { UpdateProfessorDto } from './dto/update-professor.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('professor')
 export class ProfessorController {
@@ -24,11 +25,12 @@ export class ProfessorController {
     return await this.professorService.createProfessor(createProfessorDto);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return await this.professorService.findAll();
   }
-
+  @Public()
   @Get(':id')
   async findProfessor(@Param('id', ParseIntPipe) id: string) {
     return await this.professorService.findProfessor(+id);

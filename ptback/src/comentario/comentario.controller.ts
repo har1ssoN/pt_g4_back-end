@@ -12,6 +12,7 @@ import {
 import { ComentarioService } from './comentario.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('comentario')
 export class ComentarioController {
@@ -24,11 +25,12 @@ export class ComentarioController {
     return await this.comentarioService.createComentario(createComentarioDto);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return await this.comentarioService.findAll();
   }
-
+  @Public()
   @Get(':id')
   async findComentario(@Param('id', ParseIntPipe) id: string) {
     return await this.comentarioService.findComentario(+id);

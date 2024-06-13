@@ -12,6 +12,7 @@ import {
 import { DisciplinaService } from './disciplina.service';
 import { CreateDisciplinaDto } from './dto/create-disciplina.dto';
 import { UpdateDisciplinaDto } from './dto/update-disciplina.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('disciplina')
 export class DisciplinaController {
@@ -24,11 +25,12 @@ export class DisciplinaController {
     return await this.disciplinaService.createDisciplina(createDisciplinaDto);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return await this.disciplinaService.findAll();
   }
-
+  @Public()
   @Get(':id')
   async findDisciplina(@Param('id', ParseIntPipe) id: string) {
     return await this.disciplinaService.findDisciplina(+id);
