@@ -87,10 +87,16 @@ export class UserService {
     if (!isValidId) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    const hashedPassord = await bcrypt.hash(UpdateUserDto.password, 10);
+
+    const data: any = { ...UpdateUserDto };
+
+    if (UpdateUserDto.password) {
+      data.password = await bcrypt.hash(UpdateUserDto.password, 10);
+    }
+
     return await this.prismaService.user.update({
       where: { id },
-      data: { ...UpdateUserDto, password: hashedPassord },
+      data,
       select: {
         id: true,
         name: true,

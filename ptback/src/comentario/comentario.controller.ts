@@ -8,11 +8,14 @@ import {
   Delete,
   ValidationPipe,
   ParseIntPipe,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ComentarioService } from './comentario.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
 import { UpdateComentarioDto } from './dto/update-comentario.dto';
 import { Public } from 'src/auth/decorators/isPublic.decorator';
+import { CurrentUser } from 'src/auth/decorators/CurrentUser.decorator';
+import { UserPayload } from 'src/auth/types/UserPayload';
 
 @Controller('comentario')
 export class ComentarioController {
@@ -39,8 +42,13 @@ export class ComentarioController {
   @Patch(':id')
   async updateComentario(
     @Param('id', ParseIntPipe) id: string,
-    @Body(ValidationPipe) updateComentarioDto: UpdateComentarioDto,
+    @Body(ValidationPipe) updateComentarioDto: UpdateComentarioDto, @CurrentUser() currentUser: UserPayload
   ) {
+    const comment = await this.comentarioService.findComentario(+id);
+    console.log(comment.userId, currentUser.sub);
+    if (comment.userId !== currentUser.sub) {
+      throw new UnauthorizedException('Só é possível editar seus comentários.');
+    }
     return await this.comentarioService.updateComentario(
       +id,
       updateComentarioDto,
@@ -48,7 +56,11 @@ export class ComentarioController {
   }
 
   @Delete(':id')
-  removeComentario(@Param('id', ParseIntPipe) id: string) {
+  async removeComentario(@Param('id', ParseIntPipe) id: string, @CurrentUser() currentUser: UserPayload) {
+    const comment = await this.comentarioService.findComentario(+id);
+    if(comment.userId !== currentUser.sub) {
+      throw new UnauthorizedException('Só é possível excluir seus comentários.');
+    }
     return this.comentarioService.removeComentario(+id);
   }
 }
